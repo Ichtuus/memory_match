@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { ref, onMounted, reactive } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 
-type Card = { url: string; name: string; show: boolean }[]
+interface Fruit {
+  url: string
+  name: string
+  show: boolean
+}
 
-const maxSelectedCard = 2
+type FruitList = Array<Fruit>
 
-let fruitArray: Card = [
+let fruitArray: FruitList = [
   { url: '../../../src/assets/fruits/ace.jpg', name: 'Ace', show: false },
   { url: '../../../src/assets/fruits/ace.jpg', name: 'Ace', show: false },
   { url: '../../../src/assets/fruits/baggy.jpg', name: 'Baggy', show: false },
@@ -29,33 +33,56 @@ let fruitArray: Card = [
 ]
 
 let selectedCard = ref(0)
-let countSelectedCard = 0
+let countSelectedCard: number = 0
+const maxSelectedCard: number = 2
+let selected: string[] = []
+let youWin: boolean = false
 
 function selectFruit(event: any) {
   if (event.target) {
     const { cardindex } = event.target?.dataset
-    console.log('cardindex', cardindex)
+    const { nameof } = event.target?.dataset
+    selected.push(nameof)
     selectedCard.value = cardindex
     countSelectedCard += 1
     updateFruitArray(cardindex)
+
+    youWin = new Set(selected).size !== selected.length
+
+    if (selected.length >= 2) {
+      selected = []
+      if (youWin) {
+        console.log('win')
+      }
+    }
   }
 }
 
 function updateFruitArray(indexcard: number) {
   if (countSelectedCard != maxSelectedCard) {
+    console.log(
+      `select card count ${countSelectedCard} is NOT equal to max selectcard ${maxSelectedCard}`,
+      'background: #222; color: #bada55'
+    )
     fruitArray.forEach((fruit) => (fruit.show = false))
   } else {
+    console.log(
+      `select card count ${countSelectedCard} is equal to max selectcard ${maxSelectedCard} so reset value to 0`,
+      'background: #222; color: #bada55'
+    )
     countSelectedCard = 0
   }
 
   const element = fruitArray.find((fruit, index) => index == indexcard)
 
   if (element) {
+    console.log(`display current card ${element.name}`, 'background: #222; color: #bada55')
     element.show = true
   }
 }
 
-onMounted(() => {
+onBeforeMount(() => {
+  console.log('mounted')
   fruitArray.sort(() => Math.random() - 0.5)
 })
 </script>
@@ -70,12 +97,13 @@ onMounted(() => {
       >
         <div
           class="card__body-img"
-          :class="{ selected: selectedCard === index }"
+          :class="{ selected: selectedCard == index }"
           @click="selectFruit"
         >
           <figure>
             <img
               :data-cardindex="index"
+              :data-nameof="fruit.name"
               :alt="fruit.name"
               :src="fruit.show ? fruit.url : '../../../src/assets/pngegg.png'"
               height="322"
