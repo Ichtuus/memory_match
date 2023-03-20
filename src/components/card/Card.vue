@@ -120,6 +120,7 @@ onBeforeMount(() => {
 <style scoped lang="scss">
 .card__body {
   &-img {
+    cursor: pointer;
     width: fit-content;
     box-shadow: 2px -2px 5px 1px;
     border: 1px solid #194ecc;

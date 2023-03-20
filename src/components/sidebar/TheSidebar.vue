@@ -8,10 +8,13 @@ onBeforeMount(() => {
 
 <template>
   <section class="sidebar p-xxs">
-    <span>Game Hub</span>
+    <span>GAME HUB</span>
+    <hr />
+
     <ul>
-      <li>Memory match</li>
-      <li>Word mystery</li>
+      <li><RouterLink to="/">Home</RouterLink></li>
+      <li><RouterLink to="/memory-match">Memory match</RouterLink></li>
+      <li><RouterLink to="/word-mystery">Word mystery</RouterLink></li>
     </ul>
   </section>
 </template>

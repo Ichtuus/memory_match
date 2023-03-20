@@ -1,0 +1,20 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Bob",
+      "email": "bob@gmail.com"
+    },
+    {
+      "id": 2,
+      "name": "John",
+      "email": "john@gmail.com"
+    },
+    {
+      "id": 3,
+      "name": "Nicolas",
+      "email": "nicolasdiarra777@gmail.com",
+      "password": "$2y$10$zp8iX8beYI6wIxmTK3YKTe0K0L8qxA2Wm5K6dlrq8OowuOvqCtjKi"
+    }
+  ]
+}

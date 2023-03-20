@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import card from './components/card/card.vue'
-import sidebar from './components/sidebar/sidebar.vue'
+// import card from './components/card/Card.vue'
+import sidebar from './components/sidebar/TheSidebar.vue'
 </script>
 
 <template>
@@ -8,7 +8,7 @@ import sidebar from './components/sidebar/sidebar.vue'
     <header><sidebar></sidebar></header>
 
     <main>
-      <card></card>
+      <RouterView />
     </main>
   </div>
 </template>
@@ -16,5 +16,14 @@ import sidebar from './components/sidebar/sidebar.vue'
 <style lang="scss" scoped>
 .container {
   display: flex;
+  min-height: inherit;
+
+  header {
+    flex: none;
+  }
+
+  main {
+    width: 100%;
+  }
 }
 </style>
