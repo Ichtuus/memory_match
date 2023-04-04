@@ -14,7 +14,7 @@ const router = createRouter({
     {
       path: '/memory-match',
       name: 'MemoryMatch',
-      component: () => import('../components/card/Card.vue'),
+      component: () => import('@/components/memorymatch/MemoryMatch.vue'),
       meta: {
         requiresAuth: true
       }
@@ -22,7 +22,7 @@ const router = createRouter({
     {
       path: '/word-mystery',
       name: 'WordMystery',
-      component: () => import('../components/wordmystery/Wordmystery.vue'),
+      component: () => import('@/components/wordmystery/Wordmystery.vue'),
       meta: {
         requiresAuth: true
       }
@@ -33,7 +33,7 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../components/auth/Login.vue')
+      component: () => import('@/components/auth/Login.vue')
     },
     {
       path: '/register',
@@ -41,7 +41,7 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import('../components/auth/Register.vue')
+      component: () => import('@/components/auth/Register.vue')
     }
   ]
 })
