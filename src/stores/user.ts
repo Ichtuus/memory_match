@@ -1,20 +1,16 @@
 import { defineStore } from 'pinia'
-
-interface UserState {
-  name: string
-  email: string
-}
-
+import type loginPayloadT from '@/components/auth/Login.vue'
 export const UserStore = defineStore('UserStore', {
-  state: (): { user: UserState; isLogged: boolean } => ({
-    user: { name: '', email: '' },
-    isLogged: false
+  state: () => ({
+    _user: {}
   }),
-
-  // getters: {
-  //   user: (state): UserState => state.user,
-  //   isLogged: (state): boolean => state.isLogged
-  // },
-
-  actions: {}
+  getters: {
+    user: (state) => state._user,
+    isAuthenticated: (state) => !!state._user
+  },
+  actions: {
+    updateUserAction(userdata: typeof loginPayloadT) {
+      this._user = userdata.user
+    }
+  }
 })

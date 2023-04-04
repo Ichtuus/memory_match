@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { manageAuthComposable } from '@/composables/auth/auth.composable'
+import { useAuthComposable } from '@/composables/auth/auth.composable'
 
-let authComposable = manageAuthComposable()
+let authComposable = useAuthComposable()
 </script>
 
 <template>

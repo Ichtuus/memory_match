@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { manageAuthComposable } from '@/composables/auth/auth.composable'
+import { useAuthComposable } from '@/composables/auth/auth.composable'
 
-let authComposable = manageAuthComposable()
+let authComposable = useAuthComposable()
 </script>
 
 <template>
   <section class="login p-xxs">
-    authComposable {{ authComposable }}<br />
-    isValidateEmail = {{ authComposable.isValidateEmail }}
     <div class="ds-container">
       <form class="ds-flex login-form" @submit.prevent="authComposable.handleSubmit">
         <label for="password">Password:</label>

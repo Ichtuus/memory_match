@@ -1,20 +1,22 @@
 // mouse.js
 import { ref, computed } from 'vue'
-import { login, getUser } from '@/api/user/user'
-type loginPayloadT = {
+import { login } from '@/api/user/user'
+import { UserStore } from '@/stores'
+
+export type loginPayloadT = {
   password: string
   email: string
 }
 
 // by convention, composable function names start with "use"
-export function manageAuthComposable() {
+export function useAuthComposable() {
   let form = ref({
     name: '',
     password: '',
     mail: ''
   })
 
-  let api: any = null
+  const store = UserStore()
 
   const isValidateEmail = computed(() => {
     const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
@@ -23,16 +25,20 @@ export function manageAuthComposable() {
 
   async function handleSubmit(event: any) {
     console.log('handlesubmit', event)
-    let allFieldsFilled = Object.values(form).every((value: any) => value !== '')
+    // let allFieldsFilled = Object.values(form).every((value: any) => value !== '')
 
     // if (allFieldsFilled) {
     // console.log('filled')
-    const data = await login<loginPayloadT>({
+    const user = await login<loginPayloadT>({
       password: form.value.password,
       email: form.value.mail
     })
-    await getUser()
-    console.log('data', data)
+
+    store.updateUserAction(user)
+    // store.$patch((state) => {
+    //   state._user = user
+    // })
+
     // const data = await api.getUsers()
     // }
   }
