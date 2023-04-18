@@ -1,3 +1,4 @@
 import { UserStore } from './user'
+import { GamesStore } from './games'
 
-export { UserStore }
+export { UserStore, GamesStore }

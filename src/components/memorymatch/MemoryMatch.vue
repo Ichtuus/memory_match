@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onBeforeMount } from 'vue'
+import { onBeforeMount, reactive } from 'vue'
+import { GamesStore } from '@/stores'
 
 interface Fruit {
   url: string
@@ -8,6 +9,10 @@ interface Fruit {
 }
 
 type FruitList = Array<Fruit>
+enum GamesE {
+  MEMORY_MATCH = 'memoryMatch',
+  WORD_MYSTERY = 'wordMystery'
+}
 
 let fruitArray: FruitList = [
   { url: '../../../src/assets/fruits/ace.jpg', name: 'Ace', show: false },
@@ -32,45 +37,48 @@ let fruitArray: FruitList = [
   { url: '../../../src/assets/fruits/teach.jpg', name: 'Teach', show: false }
 ]
 
-let selectedCard = ref(0)
-let countSelectedCard: number = 0
-const maxSelectedCard: number = 2
-let selected: string[] = []
+let card = reactive({
+  nbrOfSelectedCard: 0,
+  countOfSelectedCard: 0,
+  maxSelectedCard: 2,
+  selectedCard: []
+})
+
 let youWin: boolean = false
+const gameStore = GamesStore()
 
 function selectFruit(event: any) {
   if (event.target) {
     const { cardindex } = event.target?.dataset
     const { nameof } = event.target?.dataset
-    selected.push(nameof)
-    selectedCard.value = cardindex
-    countSelectedCard += 1
+    card.selectedCard.push(nameof)
+    card.nbrOfSelectedCard = cardindex
+    card.countOfSelectedCard += 1
     updateFruitArray(cardindex)
 
-    youWin = new Set(selected).size !== selected.length
+    youWin = new Set(card.selectedCard).size !== card.selectedCard.length
 
-    if (selected.length >= 2) {
-      selected = []
+    if (card.selectedCard.length >= 2) {
+      card.selectedCard = []
       if (youWin) {
         console.log('win')
+        gameStore.updateGame(GamesE.MEMORY_MATCH, 1)
       }
     }
   }
 }
 
 function updateFruitArray(indexcard: number) {
-  if (countSelectedCard != maxSelectedCard) {
+  if (card.countOfSelectedCard != card.maxSelectedCard) {
     console.log(
-      `select card count ${countSelectedCard} is NOT equal to max selectcard ${maxSelectedCard}`,
-      'background: #222; color: #bada55'
+      `select card count ${card.countOfSelectedCard} is NOT equal to max selectcard ${card.maxSelectedCard}`
     )
     fruitArray.forEach((fruit) => (fruit.show = false))
   } else {
     console.log(
-      `select card count ${countSelectedCard} is equal to max selectcard ${maxSelectedCard} so reset value to 0`,
-      'background: #222; color: #bada55'
+      `select card count ${card.countOfSelectedCard} is equal to max selectcard ${card.maxSelectedCard} so reset value to 0`
     )
-    countSelectedCard = 0
+    card.countOfSelectedCard = 0
   }
 
   const element = fruitArray.find((fruit, index) => index == indexcard)
@@ -83,6 +91,7 @@ function updateFruitArray(indexcard: number) {
 
 onBeforeMount(() => {
   console.log('mounted')
+  gameStore.updateGame('memoryMatch', {})
   fruitArray.sort(() => Math.random() - 0.5)
 })
 </script>
@@ -97,7 +106,7 @@ onBeforeMount(() => {
       >
         <div
           class="card__body-img"
-          :class="{ selected: selectedCard == index }"
+          :class="{ selected: card.nbrOfSelectedCard == index }"
           @click="selectFruit"
         >
           <figure>

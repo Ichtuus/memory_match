@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { UserStore } from '../stores/user'
 
 import Home from '../components/home/Home.vue'
+import { getUser } from '@/api/user/user'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -47,9 +48,14 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  const store = UserStore()
+  const storeUser = UserStore()
+  if (!storeUser.isAuthenticated) {
+    const user = await getUser()
+    storeUser.updateUserAction(user)
+  }
+
   if (to.meta.requiresAuth) {
-    if (!store.isAuthenticated) {
+    if (!storeUser.isAuthenticated) {
       next('/login')
     }
   } else {
